@@ -38,11 +38,10 @@ This Final <b>Project in 	Internet of Things ( Code : 09153302 )</b> <br>
 <b>My team :	</b><br>
 </div>
 
-- [Mr.THANAPHOL NANTAKASET](https://www.linkedin.com/in/satangthevalue/)<br>
-- [Miss MUKMANEE LAWAN]()<br>
-- [Mr.KHANSORNSEK PAWAKHANG](https://github.com/MePhoo)<br>
+- [Mr.THANAPHOL NANTAKASET @SatangThevalue](https://github.com/SatangThevalue)
+- [Miss MUKMANEE LAWAN @Mukmanee312](https://github.com/SatangThevalue)<br>
+- [Mr. KHANSORNSEK PAWAKHANG @MePhoo](https://github.com/MePhoo)<br>
 - [น้องน้ำ]()<br>
-
 <div align="center">
 
 <b>FACULTY :</b>	[Science and Technology](https://www.sci.rmutt.ac.th/)<br>
@@ -92,8 +91,8 @@ Blynk Administration :
 ## ✍️ Contributions and thanks | ขอบคุณเพื่อนร่วมทีมของเรา <a name = "authors"></a>
 
 - [@SatangThevalue](https://github.com/SatangThevalue)
-- [Miss MUKMANEE LAWAN]()<br>
-- [Mr. KHANSORNSEK PAWAKHANG](https://github.com/MePhoo)<br>
+- [Miss MUKMANEE LAWAN @Mukmanee312](https://github.com/SatangThevalue)<br>
+- [Mr. KHANSORNSEK PAWAKHANG @MePhoo](https://github.com/MePhoo)<br>
 - [น้องน้ำ]()<br>
 
 ## 🎉 Acknowledgements | กิตติกรรมประกาศ <a name = "acknowledgement"></a>
