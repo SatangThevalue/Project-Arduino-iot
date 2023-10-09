@@ -71,7 +71,7 @@ void setup() {
   pinMode(relay3, OUTPUT);
   pinMode(relay4, OUTPUT);
   pinMode(sw_ResetWifi, INPUT_PULLUP);
-  Timer.setInterval(3000L, read_soil);
+  Timer.setInterval(60000L, read_soil);
 
   if (Blynk.connected() == 0) {
     Serial.printf("Blynk Server connected :: Connected %d\n");
@@ -99,10 +99,23 @@ void read_soil(void) {
   if (soil_percent < set_Humi) {
     //PUMP.on()
     Blynk.virtualWrite(relay1, HIGH);
-    Serial.println("Relay1 :: ON");
-  } else{
+    //Serial.println("Relay1 :: ON");
+  } else {
     //PUMP.off()
     Blynk.virtualWrite(relay1, LOW);
-    Serial.println("Relay1 :: OFF");
+    //Serial.println("Relay1 :: OFF");
+  }
+  if (soil_percent < 45) {
+    //PUMP.on()
+    Blynk.virtualWrite(relay1, HIGH);
+    //Serial.println("Relay1 :: ON");
+  } else if (soil_percent >= 80) {
+    //PUMP.off()
+    Blynk.virtualWrite(relay1, LOW);
+    //Serial.println("Relay1 :: OFF");
+  } else {
+    //PUMP.off()
+    Blynk.virtualWrite(relay1, LOW);
+    //Serial.println("Relay1 :: OFF");
   }
 }
