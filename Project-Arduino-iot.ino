@@ -1,6 +1,6 @@
+#include <SimpleTimer.h>
 #include <WiFiManager.h>
 #include <BlynkSimpleEsp8266.h>
-#include <SimpleTimer.h>
 
 #define BLYNK_PRINT Serial
 SimpleTimer Timer;
@@ -13,21 +13,28 @@ char blynk_token[] = "HoL7PpzQnGiCG3eIZF5q1Tkd0SlH806x";
 char blynk_host[] = "en2.cmtc.ac.th";
 int blynk_port = 8080;
 int set_Humi;
+BLYNK_CONNECTED() {
+  Blynk.syncAll();
+}
 BLYNK_WRITE(V0) {
   int val_relay1 = param.asInt();
   digitalWrite(relay1, !val_relay1);
+  Serial.printf("relay1 :: %d\n",val_relay1);
 }
 BLYNK_WRITE(V1) {
   int val_relay2 = param.asInt();
   digitalWrite(relay2, !val_relay2);
+  Serial.printf("relay2 :: %d\n",val_relay2);
 }
 BLYNK_WRITE(V2) {
   int val_relay3 = param.asInt();
   digitalWrite(relay3, !val_relay3);
+  Serial.printf("relay3 :: %d\n",val_relay3);
 }
 BLYNK_WRITE(V3) {
   int val_relay4 = param.asInt();
   digitalWrite(relay4, !val_relay4);
+  Serial.printf("relay4 :: %d\n",val_relay4);
 }
 BLYNK_WRITE(V6) {
   set_Humi = param.asInt();
@@ -71,7 +78,7 @@ void setup() {
   pinMode(relay3, OUTPUT);
   pinMode(relay4, OUTPUT);
   pinMode(sw_ResetWifi, INPUT_PULLUP);
-  Timer.setInterval(60000L, read_soil);
+  Timer.setInterval(3000L, read_soil);
 
   if (Blynk.connected() == 0) {
     Serial.printf("Blynk Server connected :: Connected %d\n");
@@ -90,32 +97,34 @@ void loop() {
 }
 void read_soil(void) {
   int soil_value = analogRead(A0);
-  int soil_percent = map(soil_value, 0, 1023, 0, 100);
-  //Serial.printf("Raw Value - %d percent - %d \n", soil_value, soil_percent);
+  //อ่านค่าจาก A0
+  int soil_percent = map(soil_value, 1023, 0, 0, 100);
+  //แปลงค่า
+  Serial.printf("Raw Value - %d percent - %d \n", soil_value, soil_percent);
+  //แสดงออกทางจอภาพ
   delay(500);
-  Blynk.virtualWrite(V4, soil_value);
-  Blynk.virtualWrite(V5, soil_percent);
-  Blynk.virtualWrite(V6, set_Humi);
-  if (soil_percent < set_Humi) {
-    //PUMP.on()
-    Blynk.virtualWrite(relay1, HIGH);
-    //Serial.println("Relay1 :: ON");
-  } else {
-    //PUMP.off()
-    Blynk.virtualWrite(relay1, LOW);
-    //Serial.println("Relay1 :: OFF");
-  }
-  if (soil_percent < 45) {
-    //PUMP.on()
-    Blynk.virtualWrite(relay1, HIGH);
-    //Serial.println("Relay1 :: ON");
+  Blynk.virtualWrite(V4, soil_value); //ส่งค่าไปยังเซิฟเวอร์
+  Blynk.virtualWrite(V5, soil_percent); //ส่งค่าไปยังเซิฟเวอร์
+  Blynk.virtualWrite(V6, set_Humi); //ส่งค่าไปยังเซิฟเวอร์
+  if (soil_percent < 40) {
+    //ถ้าความชื้อนน้อยกว่า 40 เปอร์เซ็น ให้เปิดปั้ม
+    Blynk.virtualWrite(V0, 0);
+    digitalWrite(relay1, HIGH);
+    Serial.println("Relay1 :: ON By soil_percent < 40");
   } else if (soil_percent >= 80) {
-    //PUMP.off()
-    Blynk.virtualWrite(relay1, LOW);
-    //Serial.println("Relay1 :: OFF");
-  } else {
-    //PUMP.off()
-    Blynk.virtualWrite(relay1, LOW);
-    //Serial.println("Relay1 :: OFF");
+    //ถ้าความชื้อนมากกว่า 80 เปอร์เซ็น ให้ปิดปั้ม
+    Blynk.virtualWrite(V0, 1);
+    digitalWrite(relay1, LOW);
+    Serial.println("Relay1 :: OFF By soil_percent = 80");
+  } else if (soil_percent < set_Humi) {
+    //ถ้าความชื้อนน้อยกว่าที่ตั้งค่าไว้ ให้เปิดปั้ม
+    Blynk.virtualWrite(V0, 0);
+    digitalWrite(relay1, HIGH);
+    Serial.println("Relay1 :: ON By soil_percent < set_Humi");
+  } else if (soil_percent > set_Humi) {
+    //ถ้าความชื้อนมากกว่าที่ตั้งค่าไว้ ให้ปิดปั้ม
+    Blynk.virtualWrite(V0, 1);
+    digitalWrite(relay1, LOW);
+    Serial.println("Relay1 :: OFF By soil_percent > set_Humi");
   }
 }
